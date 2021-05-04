@@ -51,6 +51,9 @@ struct GeometricContext {
 	vec3 position;
 	vec3 normal;
 	vec3 viewDir;
+#ifdef USE_BENTNORMALMAP
+	vec3 bentNormal;
+#endif
 #ifdef CLEARCOAT
 	vec3 clearcoatNormal;
 #endif

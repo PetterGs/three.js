@@ -71,6 +71,15 @@ const UniformsLib = {
 
 	},
 
+	bentnormalmap: {
+
+		bentNormalMap: { value: null },
+		reflectionOcclusionMultiplier: { value: 1 },
+		bouncePowerMultiplier: { value: 1 },
+		bounceBlurMultiplier : { value: 1 },
+
+	},
+
 	displacementmap: {
 
 		displacementMap: { value: null },

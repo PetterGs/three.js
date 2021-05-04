@@ -6,13 +6,19 @@ export default /* glsl */`
 
 #endif
 
+#ifdef USE_BENTNORMALMAP
+
+	uniform sampler2D bentNormalMap;
+	
+#endif
+
 #ifdef OBJECTSPACE_NORMALMAP
 
 	uniform mat3 normalMatrix;
 
 #endif
 
-#if ! defined ( USE_TANGENT ) && ( defined ( TANGENTSPACE_NORMALMAP ) || defined ( USE_CLEARCOAT_NORMALMAP ) )
+#if ! defined ( USE_TANGENT ) && ( defined ( TANGENTSPACE_NORMALMAP ) || defined ( USE_BENTNORMALMAP ) || defined ( USE_CLEARCOAT_NORMALMAP ) )
 
 	// Normal Mapping Without Precomputed Tangents
 	// http://www.thetenthplanet.de/archives/1180

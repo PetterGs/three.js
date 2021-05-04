@@ -20,6 +20,31 @@ geometry.position = - vViewPosition;
 geometry.normal = normal;
 geometry.viewDir = ( isOrthographic ) ? vec3( 0, 0, 1 ) : normalize( vViewPosition );
 
+#ifdef USE_BENTNORMALMAP
+
+	geometry.bentNormal = bentNormal;
+
+#endif
+	#if defined( USE_ENVMAP ) 
+
+		reflectVec = reflect( -geometry.viewDir, normal );
+
+		#ifdef USE_BENTNORMALMAP
+			bentReflectVec = reflect( -geometry.viewDir, bentNormal );
+
+			bouncedRadianceFactor = dot( reflectVec, bentReflectVec );
+
+			bouncedRadianceFactor = ( bouncedRadianceFactor - 1.0 ) * reflectionOcclusionMultiplier + 1.0;
+
+			float fixedRoughness = bounceBlurMultiplier * material.specularRoughness * 0.5;
+			float normalizeFrom = 0.5 + fixedRoughness;
+			float normalizeTo = 0.5 - fixedRoughness;
+			bouncedRadianceFactor = ( bouncedRadianceFactor - normalizeFrom ) / ( normalizeTo - normalizeFrom );
+
+			bouncedRadianceFactor = clamp( bouncedRadianceFactor, 0.0, 1.0 );
+		#endif
+	#endif
+	
 #ifdef CLEARCOAT
 
 	geometry.clearcoatNormal = clearcoatNormal;

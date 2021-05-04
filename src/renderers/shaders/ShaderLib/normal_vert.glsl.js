@@ -1,7 +1,7 @@
 export default /* glsl */`
 #define NORMAL
 
-#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )
+#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP ) || defined ( USE_BENTNORMALMAP )
 
 	varying vec3 vViewPosition;
 
@@ -59,7 +59,7 @@ void main() {
 	#include <logdepthbuf_vertex>
 	#include <clipping_planes_vertex>
 
-#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )
+#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP ) || defined ( USE_BENTNORMALMAP )
 
 	vViewPosition = - mvPosition.xyz;
 

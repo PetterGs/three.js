@@ -13,6 +13,25 @@ uniform float roughness;
 uniform float metalness;
 uniform float opacity;
 
+#ifdef USE_BENTNORMALMAP
+	uniform float reflectionOcclusionMultiplier;
+	uniform float bouncePowerMultiplier;
+	uniform float bounceBlurMultiplier;
+
+	#if defined( USE_ENVMAP ) 
+	float bouncedRadianceFactor = 0.0;
+	#define USE_BOUNCEDRADIANCEFACTOR = true;
+	#endif
+#endif
+
+#if defined( USE_ENVMAP ) 
+
+vec3 reflectVec = vec3(0.0);
+
+vec3 bentReflectVec = vec3(0.0);
+
+#endif
+
 #ifdef TRANSMISSION
 	uniform float transmission;
 #endif

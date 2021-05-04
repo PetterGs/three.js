@@ -81,6 +81,7 @@ const ShaderLib = {
 			UniformsLib.emissivemap,
 			UniformsLib.bumpmap,
 			UniformsLib.normalmap,
+			UniformsLib.bentnormalmap,
 			UniformsLib.displacementmap,
 			UniformsLib.roughnessmap,
 			UniformsLib.metalnessmap,

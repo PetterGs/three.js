@@ -231,6 +231,7 @@ class MaterialLoader extends Loader {
 		if ( json.bumpScale !== undefined ) material.bumpScale = json.bumpScale;
 
 		if ( json.normalMap !== undefined ) material.normalMap = getTexture( json.normalMap );
+		if ( json.bentNormalMap !== undefined ) material.bentNormalMap = getTexture( json.bentNormalMap );
 		if ( json.normalMapType !== undefined ) material.normalMapType = json.normalMapType;
 		if ( json.normalScale !== undefined ) {
 

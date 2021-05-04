@@ -12,6 +12,12 @@ float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;
 #else
 
 	vec3 normal = normalize( vNormal );
+	
+	#ifdef USE_BENTNORMALMAP
+
+		vec3 bentNormal;
+	
+	#endif
 
 	#ifdef DOUBLE_SIDED
 
@@ -31,7 +37,7 @@ float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;
 
 		#endif
 
-		#if defined( TANGENTSPACE_NORMALMAP ) || defined( USE_CLEARCOAT_NORMALMAP )
+		#if defined( TANGENTSPACE_NORMALMAP ) || defined( USE_CLEARCOAT_NORMALMAP ) || defined( USE_BENTNORMALMAP )
 
 			mat3 vTBN = mat3( tangent, bitangent, normal );
 

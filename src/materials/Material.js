@@ -232,6 +232,12 @@ Material.prototype = Object.assign( Object.create( EventDispatcher.prototype ), 
 
 		}
 
+		if ( this.bentNormalMap && this.bentNormalMap.isTexture ) {
+
+			data.bentNormalMap = this.bentNormalMap.toJSON( meta ).uuid;
+
+		}
+
 		if ( this.displacementMap && this.displacementMap.isTexture ) {
 
 			data.displacementMap = this.displacementMap.toJSON( meta ).uuid;

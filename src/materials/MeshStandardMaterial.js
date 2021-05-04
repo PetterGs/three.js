@@ -74,6 +74,10 @@ class MeshStandardMaterial extends Material {
 		this.lightMap = null;
 		this.lightMapIntensity = 1.0;
 
+		this.reflectionOcclusionMultiplier = 1.0;
+		this.bouncePowerMultiplier = 1.0;
+		this.bounceBlurMultiplier  = 1.0;
+
 		this.aoMap = null;
 		this.aoMapIntensity = 1.0;
 
@@ -83,6 +87,8 @@ class MeshStandardMaterial extends Material {
 
 		this.bumpMap = null;
 		this.bumpScale = 1;
+
+		this.bentNormalMap = null;
 
 		this.normalMap = null;
 		this.normalMapType = TangentSpaceNormalMap;
@@ -144,6 +150,12 @@ class MeshStandardMaterial extends Material {
 
 		this.bumpMap = source.bumpMap;
 		this.bumpScale = source.bumpScale;
+
+		this.reflectionOcclusionMultiplier = source.reflectionOcclusionMultiplier;
+		this.bouncePowerMultiplier = source.bouncePowerMultiplier;
+		this.bounceBlurMultiplier  = source.bounceBlurMultiplier;
+
+		this.bentNormalMap = source.bentNormalMap;
 
 		this.normalMap = source.normalMap;
 		this.normalMapType = source.normalMapType;

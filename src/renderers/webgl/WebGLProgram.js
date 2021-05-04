@@ -116,7 +116,7 @@ function getToneMappingFunction( functionName, toneMapping ) {
 function generateExtensions( parameters ) {
 
 	const chunks = [
-		( parameters.extensionDerivatives || parameters.envMapCubeUV || parameters.bumpMap || parameters.tangentSpaceNormalMap || parameters.clearcoatNormalMap || parameters.flatShading || parameters.shaderID === 'physical' ) ? '#extension GL_OES_standard_derivatives : enable' : '',
+		( parameters.extensionDerivatives || parameters.envMapCubeUV || parameters.bumpMap || parameters.tangentSpaceNormalMap || parameters.bentNormalMap || parameters.clearcoatNormalMap || parameters.flatShading || parameters.shaderID === 'physical' ) ? '#extension GL_OES_standard_derivatives : enable' : '',
 		( parameters.extensionFragDepth || parameters.logarithmicDepthBuffer ) && parameters.rendererExtensionFragDepth ? '#extension GL_EXT_frag_depth : enable' : '',
 		( parameters.extensionDrawBuffers && parameters.rendererExtensionDrawBuffers ) ? '#extension GL_EXT_draw_buffers : require' : '',
 		( parameters.extensionShaderTextureLOD || parameters.envMap ) && parameters.rendererExtensionShaderTextureLod ? '#extension GL_EXT_shader_texture_lod : enable' : ''
@@ -457,6 +457,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			parameters.emissiveMap ? '#define USE_EMISSIVEMAP' : '',
 			parameters.bumpMap ? '#define USE_BUMPMAP' : '',
 			parameters.normalMap ? '#define USE_NORMALMAP' : '',
+			parameters.bentNormalMap ? '#define USE_BENTNORMALMAP' : '',
 			( parameters.normalMap && parameters.objectSpaceNormalMap ) ? '#define OBJECTSPACE_NORMALMAP' : '',
 			( parameters.normalMap && parameters.tangentSpaceNormalMap ) ? '#define TANGENTSPACE_NORMALMAP' : '',
 
@@ -598,6 +599,7 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			parameters.emissiveMap ? '#define USE_EMISSIVEMAP' : '',
 			parameters.bumpMap ? '#define USE_BUMPMAP' : '',
 			parameters.normalMap ? '#define USE_NORMALMAP' : '',
+			parameters.bentNormalMap ? '#define USE_BENTNORMALMAP' : '',
 			( parameters.normalMap && parameters.objectSpaceNormalMap ) ? '#define OBJECTSPACE_NORMALMAP' : '',
 			( parameters.normalMap && parameters.tangentSpaceNormalMap ) ? '#define TANGENTSPACE_NORMALMAP' : '',
 			parameters.clearcoatMap ? '#define USE_CLEARCOATMAP' : '',

@@ -174,6 +174,15 @@ function WebGLMaterials( properties ) {
 
 		}
 
+		if( material.bentNormalMap ) {
+
+			uniforms.bentNormalMap.value = material.bentNormalMap;
+			uniforms.reflectionOcclusionMultiplier.value = material.reflectionOcclusionMultiplier;
+			uniforms.bouncePowerMultiplier.value = material.bouncePowerMultiplier;
+			uniforms.bounceBlurMultiplier.value = material.bounceBlurMultiplier;
+			
+		}
+
 		// uv repeat and offset setting priorities
 		// 1. color map
 		// 2. specular map
@@ -187,6 +196,7 @@ function WebGLMaterials( properties ) {
 		// 10. clearcoat map
 		// 11. clearcoat normal map
 		// 12. clearcoat roughnessMap map
+		// 13. bent normal map
 
 		let uvScaleMap;
 
@@ -237,6 +247,10 @@ function WebGLMaterials( properties ) {
 		} else if ( material.clearcoatRoughnessMap ) {
 
 			uvScaleMap = material.clearcoatRoughnessMap;
+
+		} else if ( material.bentNormalMap ) {
+
+			uvScaleMap = material.bentNormalMap;
 
 		}
 
@@ -531,6 +545,15 @@ function WebGLMaterials( properties ) {
 			uniforms.normalMap.value = material.normalMap;
 			uniforms.normalScale.value.copy( material.normalScale );
 			if ( material.side === BackSide ) uniforms.normalScale.value.negate();
+
+		}
+
+		if ( material.bentNormalMap ) {
+
+			uniforms.bentNormalMap.value = material.bentNormalMap;
+			uniforms.reflectionOcclusionMultiplier.value = material.reflectionOcclusionMultiplier;
+			uniforms.bouncePowerMultiplier.value = material.bouncePowerMultiplier;
+			uniforms.bounceBlurMultiplier.value = material.bounceBlurMultiplier;
 
 		}
 

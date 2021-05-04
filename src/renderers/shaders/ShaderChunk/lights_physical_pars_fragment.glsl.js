@@ -69,7 +69,14 @@ float clearcoatDHRApprox( const in float roughness, const in float dotNL ) {
 
 void RE_Direct_Physical( const in IncidentLight directLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
 
-	float dotNL = saturate( dot( geometry.normal, directLight.direction ) );
+
+	#ifdef USE_BENTNORMALMAP
+		float dotNL = saturate( dot( geometry.bentNormal, directLight.direction ) );
+
+		vec3 directIrradiance = saturate( dot( geometry.normal, directLight.direction ) ) * directLight.color;
+	#else 
+		float dotNL = saturate( dot( geometry.normal, directLight.direction ) );
+	#endif
 
 	vec3 irradiance = dotNL * directLight.color;
 
@@ -109,7 +116,21 @@ void RE_Direct_Physical( const in IncidentLight directLight, const in GeometricC
 			material.sheenColor
 		);
 	#else
+
+	#ifdef USE_BENTNORMALMAP
+
+		#ifdef USE_BOUNCEDRADIANCEFACTOR
+			float occlusionFactor = ( 1.0 - bouncedRadianceFactor );
+		#else
+			vec3 reflectVector = reflect( -geometry.viewDir, geometry.normal );
+			float occlusionFactor = saturate( dot(reflectVector, geometry.bentNormal));
+		#endif
+
+		reflectedLight.directSpecular += occlusionFactor * ( 1.0 - clearcoatDHR ) * directIrradiance * BRDF_Specular_GGX( directLight, geometry.viewDir, geometry.normal, material.specularColor, material.specularRoughness);
+	#else
 		reflectedLight.directSpecular += ( 1.0 - clearcoatDHR ) * irradiance * BRDF_Specular_GGX( directLight, geometry.viewDir, geometry.normal, material.specularColor, material.specularRoughness);
+	#endif
+
 	#endif
 
 	reflectedLight.directDiffuse += ( 1.0 - clearcoatDHR ) * irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );

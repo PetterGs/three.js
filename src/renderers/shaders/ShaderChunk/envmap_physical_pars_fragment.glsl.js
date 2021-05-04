@@ -7,7 +7,15 @@ export default /* glsl */`
 
 	vec3 getLightProbeIndirectIrradiance( /*const in SpecularLightProbe specularLightProbe,*/ const in GeometricContext geometry, const in int maxMIPLevel ) {
 
-		vec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );
+		#if defined( USE_BENTNORMALMAP )
+		
+			vec3 worldNormal = inverseTransformDirection( geometry.bentNormal, viewMatrix );
+		
+		#else
+		
+			vec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );
+		
+		#endif
 
 		#ifdef ENVMAP_TYPE_CUBE
 
@@ -55,49 +63,106 @@ export default /* glsl */`
 		return clamp( desiredMIPLevel, 0.0, maxMIPLevelScalar );
 
 	}
+	
+	#ifdef USE_BENTNORMALMAP
 
-	vec3 getLightProbeIndirectRadiance( /*const in SpecularLightProbe specularLightProbe,*/ const in vec3 viewDir, const in vec3 normal, const in float roughness, const in int maxMIPLevel ) {
+		vec3 getLightProbeIndirectRadiance( /*const in SpecularLightProbe specularLightProbe,*/ const in vec3 viewDir, const in vec3 normal, const in vec3 bentNormal, const in float roughness, const in int maxMIPLevel, const in vec3 diffuseColor ) {
+			
+	#else 
 
+		vec3 getLightProbeIndirectRadiance( /*const in SpecularLightProbe specularLightProbe,*/ const in vec3 viewDir, const in vec3 normal, const in float roughness, const in int maxMIPLevel ) {
+
+	#endif
+	
 		#ifdef ENVMAP_MODE_REFLECTION
-
-			vec3 reflectVec = reflect( -viewDir, normal );
 
 			// Mixing the reflection with the normal is more accurate and keeps rough objects from gathering light from behind their tangent plane.
 			reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
-
+			
 		#else
 
-			vec3 reflectVec = refract( -viewDir, normal, refractionRatio );
-
+			reflectVec = refract( -viewDir, normal, refractionRatio );
+			
 		#endif
 
 		reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
 
+		#ifdef USE_BENTNORMALMAP
+
+			bentReflectVec = inverseTransformDirection( bentReflectVec, viewMatrix );
+
+		#endif
+
 		float specularMIPLevel = getSpecularMIPLevel( roughness, maxMIPLevel );
+
+		#ifdef USE_BENTNORMALMAP
+
+			float bouncedMIPLevel = getSpecularMIPLevel(roughness * bounceBlurMultiplier, maxMIPLevel );
+
+		#endif
 
 		#ifdef ENVMAP_TYPE_CUBE
 
 			vec3 queryReflectVec = vec3( flipEnvMap * reflectVec.x, reflectVec.yz );
 
+			#ifdef USE_BENTNORMALMAP
+
+				vec3 queryBounceVec = vec3( flipEnvMap * bentReflectVec.x, bentReflectVec.yz );
+
+			#endif
+
 			#ifdef TEXTURE_LOD_EXT
 
 				vec4 envMapColor = textureCubeLodEXT( envMap, queryReflectVec, specularMIPLevel );
+
+				#ifdef USE_BENTNORMALMAP
+
+				vec4 envBounceColor = textureCubeLodEXT( envMap, queryBounceVec, bouncedMIPLevel );
+
+				#endif
 
 			#else
 
 				vec4 envMapColor = textureCube( envMap, queryReflectVec, specularMIPLevel );
 
+				#ifdef USE_BENTNORMALMAP
+
+					vec4 envBounceColor = textureCube( envMap, queryBounceVec, bouncedMIPLevel  );
+				
+				#endif
+
 			#endif
 
 			envMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;
+
+			#ifdef USE_BENTNORMALMAP
+
+				envBounceColor.rgb = envMapTexelToLinear( envBounceColor ).rgb;
+				
+			#endif
 
 		#elif defined( ENVMAP_TYPE_CUBE_UV )
 
 			vec4 envMapColor = textureCubeUV( envMap, reflectVec, roughness );
 
+			#ifdef USE_BENTNORMALMAP
+
+				vec4 envBounceColor = textureCubeUV( envMap, bentReflectVec, roughness * bounceBlurMultiplier );
+				
+			#endif
+
 		#endif
 
-		return envMapColor.rgb * envMapIntensity;
+		#ifdef USE_BENTNORMALMAP
+
+			vec3 selfBounceColor = diffuseColor * bouncePowerMultiplier;
+			return mix( envMapColor.rgb, envBounceColor.rgb * selfBounceColor, bouncedRadianceFactor ) * envMapIntensity;
+
+		#else
+		
+			return envMapColor.rgb * envMapIntensity;
+
+		#endif
 
 	}
 

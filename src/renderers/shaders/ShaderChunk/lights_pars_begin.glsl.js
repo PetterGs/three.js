@@ -32,7 +32,16 @@ vec3 shGetIrradianceAt( in vec3 normal, in vec3 shCoefficients[ 9 ] ) {
 
 vec3 getLightProbeIrradiance( const in vec3 lightProbe[ 9 ], const in GeometricContext geometry ) {
 
-	vec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );
+	#if defined( USE_BENTNORMALMAP )
+		
+		vec3 worldNormal = inverseTransformDirection( geometry.bentNormal, viewMatrix );
+
+	#else
+
+		vec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );
+
+	#endif
+
 
 	vec3 irradiance = shGetIrradianceAt( worldNormal, lightProbe );
 
@@ -175,7 +184,16 @@ vec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
 
 	vec3 getHemisphereLightIrradiance( const in HemisphereLight hemiLight, const in GeometricContext geometry ) {
 
-		float dotNL = dot( geometry.normal, hemiLight.direction );
+		#if defined( USE_BENTNORMALMAP )
+			
+			float dotNL = dot( geometry.bentNormal, hemiLight.direction );
+
+		#else
+
+			float dotNL = dot( geometry.normal, hemiLight.direction );
+
+		#endif
+
 		float hemiDiffuseWeight = 0.5 * dotNL + 0.5;
 
 		vec3 irradiance = mix( hemiLight.groundColor, hemiLight.skyColor, hemiDiffuseWeight );
