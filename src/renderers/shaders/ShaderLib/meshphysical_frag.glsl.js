@@ -115,17 +115,8 @@ void main() {
 		diffuseColor.a *= mix( saturate( 1. - totalTransmission + linearToRelativeLuminance( reflectedLight.directSpecular + reflectedLight.indirectSpecular ) ), 1.0, metalness );
 	#endif
 
-	#ifdef USE_BENTNORMALMAP
-
-	vec3 mapBN = texture2D( bentNormalMap, vUv2 ).xyz;
-
-	gl_FragColor = vec4( mapBN, diffuseColor.a );
-
-	#else
-	
 	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
 
-	#endif
 	#include <tonemapping_fragment>
 	#include <encodings_fragment>
 	#include <fog_fragment>
