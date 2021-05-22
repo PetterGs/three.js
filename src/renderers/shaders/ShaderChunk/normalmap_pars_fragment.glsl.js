@@ -6,6 +6,12 @@ export default /* glsl */`
 
 #endif
 
+#ifdef USE_BENTNORMALMAP
+
+	uniform sampler2D bentNormalMap;
+	
+#endif
+
 #ifdef OBJECTSPACE_NORMALMAP
 
 	uniform mat3 normalMatrix;

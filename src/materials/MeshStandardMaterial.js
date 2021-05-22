@@ -87,6 +87,8 @@ class MeshStandardMaterial extends Material {
 		this.normalMapType = TangentSpaceNormalMap;
 		this.normalScale = new Vector2( 1, 1 );
 
+		this.bentNormalMap = null;
+
 		this.displacementMap = null;
 		this.displacementScale = 1;
 		this.displacementBias = 0;
@@ -146,6 +148,8 @@ class MeshStandardMaterial extends Material {
 		this.normalMap = source.normalMap;
 		this.normalMapType = source.normalMapType;
 		this.normalScale.copy( source.normalScale );
+
+		this.bentNormalMap = source.bentNormalMap;
 
 		this.displacementMap = source.displacementMap;
 		this.displacementScale = source.displacementScale;

@@ -174,6 +174,12 @@ function WebGLMaterials( properties ) {
 
 		}
 
+		if( material.bentNormalMap ) {
+
+			uniforms.bentNormalMap.value = material.bentNormalMap;
+			
+		}
+
 		// uv repeat and offset setting priorities
 		// 1. color map
 		// 2. specular map
@@ -237,6 +243,10 @@ function WebGLMaterials( properties ) {
 		} else if ( material.clearcoatRoughnessMap ) {
 
 			uvScaleMap = material.clearcoatRoughnessMap;
+
+		} else if ( material.bentNormalMap ) {
+
+			uvScaleMap = material.bentNormalMap;
 
 		}
 
@@ -531,6 +541,12 @@ function WebGLMaterials( properties ) {
 			uniforms.normalMap.value = material.normalMap;
 			uniforms.normalScale.value.copy( material.normalScale );
 			if ( material.side === BackSide ) uniforms.normalScale.value.negate();
+
+		}
+
+		if ( material.bentNormalMap ) {
+
+			uniforms.bentNormalMap.value = material.bentNormalMap;
 
 		}
 

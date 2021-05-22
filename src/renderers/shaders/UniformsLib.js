@@ -71,6 +71,12 @@ const UniformsLib = {
 
 	},
 
+	bentnormalmap: {
+
+		bentNormalMap: { value: null },
+
+	},
+
 	displacementmap: {
 
 		displacementMap: { value: null },
