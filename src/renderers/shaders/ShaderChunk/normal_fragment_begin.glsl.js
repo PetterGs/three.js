@@ -13,6 +13,12 @@ float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;
 
 	vec3 normal = normalize( vNormal );
 
+	#ifdef USE_BENTNORMALMAP
+
+		vec3 bentNormal;
+
+	#endif
+
 	#ifdef DOUBLE_SIDED
 
 		normal = normal * faceDirection;

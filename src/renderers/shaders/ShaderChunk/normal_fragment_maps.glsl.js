@@ -1,5 +1,21 @@
 export default /* glsl */`
 
+#ifdef USE_BENTNORMALMAP
+
+	vec3 mapBN = texture2D( bentNormalMap, vUv2 ).xyz * 2.0 - 1.0;
+	
+	#ifdef USE_TANGENT
+
+		bentNormal = normalize( vTBN * mapBN );
+
+	#else
+
+		bentNormal = perturbNormal2Arb( -vViewPosition, normal, mapBN, faceDirection );
+	
+	#endif
+
+#endif
+
 #ifdef OBJECTSPACE_NORMALMAP
 
 	normal = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0; // overrides both flatShading and attribute normals

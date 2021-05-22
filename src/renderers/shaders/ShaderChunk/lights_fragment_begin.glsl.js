@@ -20,6 +20,12 @@ geometry.position = - vViewPosition;
 geometry.normal = normal;
 geometry.viewDir = ( isOrthographic ) ? vec3( 0, 0, 1 ) : normalize( vViewPosition );
 
+#ifdef USE_BENTNORMALMAP
+
+	geometry.bentNormal = bentNormal;
+
+#endif
+
 #ifdef CLEARCOAT
 
 	geometry.clearcoatNormal = clearcoatNormal;

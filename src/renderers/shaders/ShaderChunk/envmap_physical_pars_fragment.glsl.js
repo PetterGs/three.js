@@ -7,7 +7,15 @@ export default /* glsl */`
 
 	vec3 getLightProbeIndirectIrradiance( /*const in SpecularLightProbe specularLightProbe,*/ const in GeometricContext geometry, const in int maxMIPLevel ) {
 
-		vec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );
+		#if defined( USE_BENTNORMALMAP )
+		
+			vec3 worldNormal = inverseTransformDirection( geometry.bentNormal, viewMatrix );
+		
+		#else
+		
+			vec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );
+		
+		#endif
 
 		#ifdef ENVMAP_TYPE_CUBE
 
