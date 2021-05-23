@@ -85,6 +85,11 @@ void main() {
 		float totalTransmission = transmission;
 	#endif
 
+	#if defined( USE_BENTNORMALMAP ) && defined( USE_AOMAP )	
+		// reads channel R, compatible with a combined OcclusionRoughnessMetallic (RGB) texture
+		float ambientOcclusion = ( texture2D( aoMap, vUv2 ).r - 1.0 ) * aoMapIntensity + 1.0;
+	#endif
+
 	#include <logdepthbuf_fragment>
 	#include <map_fragment>
 	#include <color_fragment>
