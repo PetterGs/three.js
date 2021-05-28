@@ -74,6 +74,7 @@ const UniformsLib = {
 	bentnormalmap: {
 
 		bentNormalMap: { value: null },
+		reflectionOcclusionMultiplier: { value: 1 },
 
 	},
 

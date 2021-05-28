@@ -13,6 +13,10 @@ uniform float roughness;
 uniform float metalness;
 uniform float opacity;
 
+#ifdef USE_BENTNORMALMAP
+	uniform float reflectionOcclusionMultiplier;
+#endif
+
 #ifdef TRANSMISSION
 	uniform float transmission;
 #endif

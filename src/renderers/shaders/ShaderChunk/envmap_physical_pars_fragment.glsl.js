@@ -93,7 +93,7 @@ export default /* glsl */`
 
 		float occlusionFactor = saturate(dot(reflectVec, bentNormal));
 
-		occlusionFactor = mix(occlusionFactor, 1.0, ambientOcclusion);
+		reflectVec = (occlusionFactor < reflectionOcclusionMultiplier) ? reflect( -viewDir, bentNormal ) : reflectVec;
 
 		#endif
 
@@ -121,15 +121,7 @@ export default /* glsl */`
 
 		#endif
 
-		#ifdef USE_BENTNORMALMAP
-
-		return envMapColor.rgb * envMapIntensity * occlusionFactor;
-
-		#else
-
 		return envMapColor.rgb * envMapIntensity;
-
-		#endif
 	}
 
 #endif

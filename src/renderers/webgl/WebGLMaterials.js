@@ -177,6 +177,7 @@ function WebGLMaterials( properties ) {
 		if( material.bentNormalMap ) {
 
 			uniforms.bentNormalMap.value = material.bentNormalMap;
+			uniforms.reflectionOcclusionMultiplier.value = material.reflectionOcclusionMultiplier;
 			
 		}
 

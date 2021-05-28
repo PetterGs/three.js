@@ -88,6 +88,7 @@ class MeshStandardMaterial extends Material {
 		this.normalScale = new Vector2( 1, 1 );
 
 		this.bentNormalMap = null;
+		this.reflectionOcclusionMultiplier = 1.0;
 
 		this.displacementMap = null;
 		this.displacementScale = 1;
@@ -150,6 +151,7 @@ class MeshStandardMaterial extends Material {
 		this.normalScale.copy( source.normalScale );
 
 		this.bentNormalMap = source.bentNormalMap;
+		this.reflectionOcclusionMultiplier = source.reflectionOcclusionMultiplier;
 
 		this.displacementMap = source.displacementMap;
 		this.displacementScale = source.displacementScale;
