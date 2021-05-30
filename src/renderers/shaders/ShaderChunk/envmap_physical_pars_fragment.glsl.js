@@ -64,8 +64,16 @@ export default /* glsl */`
 
 	}
 
+	#ifdef USE_BENTNORMALMAP
+
+	vec3 getLightProbeIndirectRadiance( /*const in SpecularLightProbe specularLightProbe,*/ const in vec3 viewDir, const in vec3 normal, const in vec3 bentNormal, const in float ambientOcclusion, const in float roughness, const in int maxMIPLevel ) {
+			
+	#else
+
 	vec3 getLightProbeIndirectRadiance( /*const in SpecularLightProbe specularLightProbe,*/ const in vec3 viewDir, const in vec3 normal, const in float roughness, const in int maxMIPLevel ) {
 
+	#endif
+	
 		#ifdef ENVMAP_MODE_REFLECTION
 
 			vec3 reflectVec = reflect( -viewDir, normal );
@@ -76,6 +84,14 @@ export default /* glsl */`
 		#else
 
 			vec3 reflectVec = refract( -viewDir, normal, refractionRatio );
+
+		#endif
+
+		#ifdef USE_BENTNORMALMAP
+
+		float occlusionFactor = saturate(dot(reflectVec, bentNormal));
+
+		occlusionFactor = mix(occlusionFactor, 1.0, ambientOcclusion);
 
 		#endif
 
@@ -105,8 +121,15 @@ export default /* glsl */`
 
 		#endif
 
+		#ifdef USE_BENTNORMALMAP
+
+		return envMapColor.rgb * envMapIntensity * occlusionFactor;
+
+		#else
+
 		return envMapColor.rgb * envMapIntensity;
 
+		#endif
 	}
 
 #endif
